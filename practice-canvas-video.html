@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+
+
+
+#myVideo {
+  position: fixed;
+/* right: 0; */
+  bottom: 0;
+  width: 100%; 
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.content {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+canvas {
+  /* background: green; */
+  opacity: 1.0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+}
+	
+a[download]{
+  display: block;
+  width: 140px;
+  background: #369;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+   
+a[download], h1 span {
+  opacity: 0;
+}
+    
+.painted a[download], .painted h1 span {
+  opacity: 1;
+ /* transition: 0.5s; */
+}
+    
+</style>
+</head>
+
+<body>
+
+
+<video id="myVideo">
+  <source src="comet-vid.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+<canvas></canvas>
+
+
+<script>
+  window.addEventListener('load', function(ev) {
+    //var sourceimage = document.querySelector('img');
+    var canvas = document.querySelector('canvas');
+    var link = document.querySelector('a');
+    var context = canvas.getContext('2d');
+    var mouseX = 0, mouseY = 0,
+        width = 300, height = 300,
+        mousedown = false;
+    canvas.width = width;
+    canvas.height = height;
+    context.fillStyle = 'black'; 
+    function draw(ev) {
+      if (mousedown) {
+        var x = ev.layerX;
+        var y = ev.layerY;
+        x = (Math.ceil(x / 5) * 5) - 5;
+        y = (Math.ceil(y / 5) * 5) - 5;
+        context.fillRect(x, y, 5, 5);
+      }
+    }
+    var link = document.createElement('a');
+        link.innerHTML = 'Download Mask Image';
+        link.href = "#";
+        link.download = "mypainting.png";
+    document.body.insertBefore(link, canvas);
+    canvas.addEventListener('mouseover', function(ev) {
+      document.body.classList.add('painted');
+    }, false);
+    canvas.addEventListener('mousemove', draw, false);
+    canvas.addEventListener('mousedown', function(ev) {
+      mousedown = true;
+    }, false );
+    canvas.addEventListener('mouseup', function(ev) {
+      link.href = canvas.toDataURL();
+      mousedown = false;
+    }, false );
+  } ,false);
+</script>
+
+
+</body>
+</html>
